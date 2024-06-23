@@ -1,87 +1,66 @@
-import React from 'react'
-import './Card.css'
-import Logo from "../../Images/Logo"
-import Tooltip from '@mui/material/Tooltip';
-import Box from '@mui/material/Box';
-import { Link } from "react-router-dom";
+import React from "react";
+import styles from "./card.module.css";
+import { Chip, Tooltip } from "@mui/material";
+const Card = ({ cardItem, type }) => {
+  const getCard = (type) => {
+    switch (type) {
+      case "album": {
+        const { title, follows, image, songs } = cardItem;
+        return (
+          <Tooltip title={songs?.length + " songs"} placement='top' arrow>
+            <div className={styles.wrapper}>
+              <div className={styles.card}>
+                <img
+                  src={image}
+                  alt='albumImage'
+                  height='170px'
+                  width='159px'></img>
+                <div className={styles.banner}>
+                  <Chip
+                    className={styles.chip}
+                    label={follows + " Follows"}
+                    size='small'
+                  />
+                </div>
+              </div>
+              <div className={styles.titleWrapper}>
+                <p>{title}</p>
+              </div>
+            </div>
+          </Tooltip>
+        );
+      }
+      case "songs": {
+        const { likes, image, title } = cardItem;
+        return (
+          <div className={styles.wrapper}>
+            <div className={styles.card}>
+              <img
+                src={image}
+                alt='albumImage'
+                height='170px'
+                width='159px'></img>
+              <div className={styles.banner}>
+                <Chip
+                  className={styles.chip}
+                  label={likes + " Likes"}
+                  size='small'
+                />
+              </div>
+            </div>
+            <div className={styles.titleWrapper}>
+              <p>{title}</p>
+            </div>
+          </div>
+        );
+      }
 
-const Card = (props) => {
-
-  const positionRef = React.useRef({
-    x: 0,
-    y: 0,
-  });
-  const popperRef = React.useRef(null);
-  const areaRef = React.useRef(null);
-
-  const handleMouseMove = (event) => {
-    positionRef.current = { x: event.clientX, y: event.clientY };
-
-    if (popperRef.current != null) {
-      popperRef.current.update();
+      default:
+        return <></>;
     }
   };
 
-  return (
-    <div>
-      <Tooltip
-        title={props.totalSongs}
-        placement="top"
-        arrow
-        PopperProps={{
-          popperRef,
-          anchorEl: {
-            getBoundingClientRect: () => {
-              return new DOMRect(
-                positionRef.current.x,
-                areaRef.current.getBoundingClientRect().y,
-                0,
-                0,
-              );
-            },
-          },
-        }}
-      >
-        {props.slug ? ( // Check if props.slug is defined
-          <Link to={`/music/${props.slug}`}>
-            <Box
-              ref={areaRef}
-              onMouseMove={handleMouseMove}
-            >
-              <div className='card'>
-                <img src={props.image} alt={<Logo />} />
-                <div className='followers'>
-                  {props.follows ? (
-                    <p>{props.follows} Follows</p>
-                  ) : (
-                    <p>{props.likes} Likes</p>
-                  )}
-                </div>
-              </div>
-              <p className="category">{props.title}</p>
-            </Box>
-          </Link>
-        ) : (
-          <Box
-            ref={areaRef}
-            onMouseMove={handleMouseMove}
-          >
-            <div className='card'>
-              <img src={props.image} alt={<Logo />} />
-              <div className='followers'>
-                {props.follows ? (
-                  <p>{props.follows} Follows</p>
-                ) : (
-                  <p>{props.likes} Likes</p>
-                )}
-              </div>
-            </div>
-            <p className="category">{props.title}</p>
-          </Box>
-        )}
-      </Tooltip>
-    </div>
-  )
-}
+  return getCard(type);
+};
 
 export default Card;
