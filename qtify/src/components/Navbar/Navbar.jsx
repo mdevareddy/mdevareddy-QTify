@@ -1,44 +1,22 @@
-import Logo from "../Logo/Logo";
-import Search from "../Search/Search";
-import Button from "../Button/Button";
-import { useEffect, useState } from "react";
-import Feedback from "../Feedback/Feedback";
-import styles from "./navbar.module.css";
-
-const Navbar = ({ data, page, songsData }) => {
-  const [isFeedbackClicked, setIsFeedbackClicked] = useState(false);
-
-  const handleClick = () => {
-    setIsFeedbackClicked(!isFeedbackClicked);
-  };
-
-  useEffect(() => {
-    let feedback = document.getElementById("feedback");
-    let body = document.body;
-    if (isFeedbackClicked) {
-      body.style.overflowY = "hidden";
-      feedback?.classList.add("feedbackClicked");
-    } else {
-      body.style.overflowY = "auto";
-      feedback?.classList.remove("feedbackClicked");
-    }
-  }, [isFeedbackClicked]);
-
+import React from 'react'
+import Icon from "../QtifyLogo/Logo"
+import Search from '../Searchs/Search';
+import Feedback from '../Feedback/Feedback'
+import "./Navbar.css"
+function Navbar() {
   return (
-    <>
-      {isFeedbackClicked && (
-        <Feedback onClose={() => setIsFeedbackClicked(false)} />
-      )}
-      <nav className={styles.nav}>
-        <Logo />
-        <Search data={page === "home" ? data : songsData} page={page} />
-        <Button
-          text="GIVE FEEDBACK"
-          eventHandler={{ event: "onClick", handler: handleClick }}
-        />
-      </nav>
-    </>
-  );
-};
+    <div className='nav'>
+        <div className="left">
+            <Icon/>
+        </div>
+        <div className="middle">
+            <Search/>
+        </div>
+        <div className="right">
+            <Feedback/>
+        </div>
+    </div>
+  )
+}
 
-export default Navbar;
+export default Navbar

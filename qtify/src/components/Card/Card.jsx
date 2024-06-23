@@ -1,49 +1,87 @@
-import React from "react";
-import { Tooltip } from "@mui/material";
-import styles from "./card.module.css";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import './Card.css'
+import Logo from "../../Images/Logo"
+import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
+import { Link } from "react-router-dom";
 
-const Card = ({ data, type }) => {
-  let navigate = useNavigate();
-  const getCard = () => {
-    const commonContent = (
-      <div
-        className={styles.cardImg}
-        onClick={() =>
-          type !== "songs" &&
-          navigate(`/album/${data.slug}`, { state: { album: data } })
-        }
-      >
-        <img src={data.image} alt={type === "album" ? "album" : data.title} />
-        <p>
-          {((type === "album" ? data.follows : data.likes) / 1000).toFixed(1)}
-          {data.follows > 999999 || data.likes > 999999 ? "m" : "k"}{" "}
-          {type === "album" ? "Follows" : "Likes"}
-        </p>
-      </div>
-    );
+const Card = (props) => {
 
-    return (
-      <Tooltip
-        title={
-          type === "album"
-            ? `${data.songs.length} songs`
-            : `Label : ${data.genre.label}`
-        }
-        placement="top"
-        arrow
-      >
-        <div className={styles.card}>
-          {commonContent}
-          <div>
-            <h3>{data.title}</h3>
-          </div>
-        </div>
-      </Tooltip>
-    );
+  const positionRef = React.useRef({
+    x: 0,
+    y: 0,
+  });
+  const popperRef = React.useRef(null);
+  const areaRef = React.useRef(null);
+
+  const handleMouseMove = (event) => {
+    positionRef.current = { x: event.clientX, y: event.clientY };
+
+    if (popperRef.current != null) {
+      popperRef.current.update();
+    }
   };
 
-  return type === "album" || type === "songs" ? getCard() : null;
-};
+  return (
+    <div>
+      <Tooltip
+        title={props.totalSongs}
+        placement="top"
+        arrow
+        PopperProps={{
+          popperRef,
+          anchorEl: {
+            getBoundingClientRect: () => {
+              return new DOMRect(
+                positionRef.current.x,
+                areaRef.current.getBoundingClientRect().y,
+                0,
+                0,
+              );
+            },
+          },
+        }}
+      >
+        {props.slug ? ( // Check if props.slug is defined
+          <Link to={`/music/${props.slug}`}>
+            <Box
+              ref={areaRef}
+              onMouseMove={handleMouseMove}
+            >
+              <div className='card'>
+                <img src={props.image} alt={<Logo />} />
+                <div className='followers'>
+                  {props.follows ? (
+                    <p>{props.follows} Follows</p>
+                  ) : (
+                    <p>{props.likes} Likes</p>
+                  )}
+                </div>
+              </div>
+              <p className="category">{props.title}</p>
+            </Box>
+          </Link>
+        ) : (
+          <Box
+            ref={areaRef}
+            onMouseMove={handleMouseMove}
+          >
+            <div className='card'>
+              <img src={props.image} alt={<Logo />} />
+              <div className='followers'>
+                {props.follows ? (
+                  <p>{props.follows} Follows</p>
+                ) : (
+                  <p>{props.likes} Likes</p>
+                )}
+              </div>
+            </div>
+            <p className="category">{props.title}</p>
+          </Box>
+        )}
+      </Tooltip>
+    </div>
+  )
+}
 
 export default Card;
