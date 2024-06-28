@@ -1,8 +1,13 @@
 /* Navbar */
 
 .nav {
-    width: 100vw;
-    height: 75px;
+    /* width: 100vw;
+    height: 75px; */
+    width: 1440px;
+    height: 74px;
+    gap: 0px;
+    opacity: 0px;
+
     background-color: var(--primary-color);
     display: flex;
     justify-content: space-between;
@@ -77,6 +82,8 @@
     .img {
         width: 60px;
         height: 30px;
+       
+
     }
     .searchField input {
         padding: 5px;
