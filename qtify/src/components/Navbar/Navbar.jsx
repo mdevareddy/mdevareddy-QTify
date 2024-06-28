@@ -1,3 +1,49 @@
+// import Logo from "../Logo/Logo";
+// import Search from "../Search/Search";
+// import Button from "../Button/Button";
+// import { useEffect, useState } from "react";
+// import Feedback from "../Feedback/Feedback";
+// import styles from "./navbar.module.css";
+
+// const Navbar = ({ data, page, songsData }) => {
+//   const [isFeedbackClicked, setIsFeedbackClicked] = useState(false);
+
+//   const handleClick = () => {
+//     setIsFeedbackClicked(!isFeedbackClicked);
+//   };
+
+//   useEffect(() => {
+//     let feedback = document.getElementById("feedback");
+//     let body = document.body;
+//     if (isFeedbackClicked) {
+//       body.style.overflowY = "hidden";
+//       feedback?.classList.add("feedbackClicked");
+//     } else {
+//       body.style.overflowY = "auto";
+//       feedback?.classList.remove("feedbackClicked");
+//     }
+//   }, [isFeedbackClicked]);
+
+//   return (
+//     <>
+//       {isFeedbackClicked && (
+//         <Feedback onClose={() => setIsFeedbackClicked(false)} />
+//       )}
+//       <nav className={styles.nav}>
+//         <Logo />
+//         <Search data={page === "home" ? data : songsData} page={page} />
+//         <Button
+//           text="GIVE FEEDBACK"
+//           eventHandler={{ event: "onClick", handler: handleClick }}
+//         />
+//       </nav>
+//     </>
+//   );
+// };
+
+// export default Navbar;
+
+
 import Logo from "../Logo/Logo";
 import Search from "../Search/Search";
 import Button from "../Button/Button";
@@ -13,14 +59,14 @@ const Navbar = ({ data, page, songsData }) => {
   };
 
   useEffect(() => {
-    let feedback = document.getElementById("feedback");
-    let body = document.body;
+    const feedback = document.getElementById("feedback");
+    const body = document.body;
     if (isFeedbackClicked) {
       body.style.overflowY = "hidden";
-      feedback?.classList.add("feedbackClicked");
+      feedback?.classList.add(styles.feedbackClicked);
     } else {
       body.style.overflowY = "auto";
-      feedback?.classList.remove("feedbackClicked");
+      feedback?.classList.remove(styles.feedbackClicked);
     }
   }, [isFeedbackClicked]);
 
@@ -32,13 +78,11 @@ const Navbar = ({ data, page, songsData }) => {
       <nav className={styles.nav}>
         <Logo />
         <Search data={page === "home" ? data : songsData} page={page} />
-        <Button
-          text="GIVE FEEDBACK"
-          eventHandler={{ event: "onClick", handler: handleClick }}
-        />
+        <Button text="GIVE FEEDBACK" onClick={handleClick} />
       </nav>
     </>
   );
 };
 
 export default Navbar;
+

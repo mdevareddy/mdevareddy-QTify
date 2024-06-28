@@ -41,7 +41,7 @@ function Feedback({ onClose }) {
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.closeWrapper}>
               <div></div>
-              <h3>Give FeedBack</h3>
+              <h3>FeedBack</h3>
               <h3 onClick={onClose} className={styles.close}>
                 X
               </h3>
